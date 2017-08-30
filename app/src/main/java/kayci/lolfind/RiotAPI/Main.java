@@ -12,7 +12,6 @@ public class Main {
         Scanner scanner = new Scanner( System.in );
         System.out.print( "Type in your summoner name: " );
         Summoner.getInstance().setSummonerName(scanner.nextLine());
-        GetSummonerID.getUserInfo();
         System.out.println(Summoner.getInstance().getSummonerID());
         System.out.println(Summoner.getInstance().getSummonerName());
         System.out.println(Summoner.getInstance().getSummonerLevel());

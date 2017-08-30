@@ -5,7 +5,7 @@ package kayci.lolfind.RiotAPI;
  */
 public class Summoner {
 
-    private static String apiKey = "";
+    private static String apiKey = "RGAPI-4ece51eb-1742-46fd-9741-1c4a168beced";
     private static String summonerName = null;
     private static String summonerID = null;
     private static String summonerLevel = null;

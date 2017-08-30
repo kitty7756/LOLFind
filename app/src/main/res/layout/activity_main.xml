@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="@drawable/background"
+    android:background="@drawable/lee"
     tools:context="kayci.lolfind.MainActivity">
 
     <TextView
@@ -20,10 +20,11 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:fontFamily="sans-serif-smallcaps"
         android:textSize="24sp"
-        android:textColor="@color/colorAccent"
+        android:textColor="@android:color/background_light"
         android:layout_marginTop="69dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textStyle="normal|bold" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -47,7 +48,9 @@
         android:layout_marginTop="71dp"
         android:layout_below="@+id/editText2"
         android:layout_centerHorizontal="true"
-        android:onClick="sendMessage"/>
+        android:onClick="sendMessage"
+        android:backgroundTint="@android:color/background_light"
+        android:background="@android:drawable/alert_dark_frame" />
 
 
 </RelativeLayout>

@@ -3,7 +3,11 @@ package kayci.lolfind.RiotAPI;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import kayci.lolfind.AsyncResponse;
+import kayci.lolfind.RiotAPI.JSON.SummID;
 import kayci.lolfind.RiotAPI.JSON.TopChamps;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -21,35 +25,46 @@ import java.util.List;
 
 public class GetTopChampion {
 
+    public static AsyncResponse resp = null;
     private static OkHttpClient client = new OkHttpClient();
 
-    public static String getJSON(String url) throws IOException {
+    //Asynchronous
+
+    public static Call getJSON(String url, Callback callback) {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
-
-        Response response = client.newCall(request).execute();
-        return response.body().string();
+        Call call = client.newCall(request);
+        call.enqueue(callback);
+        return call;
     }
 
-    public static void getChamps(){
-        String json = null;
-        try {
-            String url = "https://na1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/"
-                    + Summoner.getInstance().getSummonerID() + "?api_key=" + Summoner.getInstance().getApiKey();
-            json = getJSON(url);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+    public static void getTopFiveChampions() {
+        final String url = "https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/" + Summoner.getInstance().getSummonerID()
+                + "?api_key=" + Summoner.getInstance().getApiKey();
+        getJSON(url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                resp.whenNoInternet();
+            }
 
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<TopChamps>>(){}.getType();
-        List<TopChamps> top = (List<TopChamps>) gson.fromJson(json, listType);
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String r = response.body().string();
 
+                    Gson gson = new Gson();
+                    SummID summID = gson.fromJson(r, SummID.class);
 
-        for (TopChamps tp : top) {
-            System.out.println("ChampionID: " + tp.getChampionId());
-        }
+                    Summoner.getInstance().setSummonerName(summID.getName());
+                    Summoner.getInstance().setSummonerID(summID.getId());
+                    Summoner.getInstance().setSummonerLevel(summID.getSummonerLevel());
+                    resp.whenFinish();
+
+                } else {
+                    resp.whenBroken();
+                }
+            }
+        });
     }
-
 }

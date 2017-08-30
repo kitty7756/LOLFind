@@ -6,24 +6,43 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import kayci.lolfind.RiotAPI.GetSummonerID;
-import kayci.lolfind.RiotAPI.JSON.SummID;
-import kayci.lolfind.RiotAPI.Summoner;
 
-public class Loading extends AppCompatActivity {
+public class Loading extends AppCompatActivity implements AsyncResponse {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
+        GetSummonerID.resp = this;
+        GetSummonerID.getUserInfoSync();
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                GetSummonerID.getUserInfoSync();
-                Intent i = new Intent(Loading.this, DisplaySummonerInfo.class);
-                Loading.this.startActivity(i);
-                Loading.this.finish();
-            }
-        }, 3000);
+    }
+
+    @Override
+    protected  void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void whenFinish() {
+        Intent i = new Intent(Loading.this, DisplaySummonerInfo.class);
+        Loading.this.startActivity(i);
+        Loading.this.finish();
+    }
+
+    @Override
+    public void whenBroken() {
+        Intent i = new Intent(Loading.this, UserNull.class);
+        Loading.this.startActivity(i);
+        Loading.this.finish();
+    }
+
+    @Override
+    public void whenNoInternet() {
+        Intent i = new Intent(Loading.this, NoInternet.class);
+        Loading.this.startActivity(i);
+        Loading.this.finish();
     }
 }

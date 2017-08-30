@@ -17,8 +17,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DisplaySummonerInfo"></activity>
-        <activity android:name=".Loading"></activity>
+        <activity android:name=".DisplaySummonerInfo" />
+        <activity android:name=".Loading" />
+        <activity android:name=".UserNull" />
+        <activity android:name=".NoInternet"></activity>
     </application>
 
 </manifest>
